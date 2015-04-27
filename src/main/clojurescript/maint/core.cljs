@@ -8,16 +8,26 @@
 (def app-state
   (reagent/atom {:completed []}))
 
-;; (defn add-maintenance
-;;   []
-;;   (let [maintenance (reagent/atom {})]
-;;     (fn []
-;;       [:div
-;;        [:input {:type "text"
-;;                 :placeholder "Describe maintenance completed. "
-;;                 :value 
-;;                 :on-change #(swap! maintenance :description (-> % .-target .-value))}]
-;;        [:button {:on-click #(get-counts @request)} "Add"]])))
+(defn add-maintenance
+  []
+  (let [durable-good ""
+        notes ""
+        userid 13]
+    (fn []
+      [:div
+       [:input {:type "text"
+                :placeholder "Durable good."
+                :value durable-good } ]
+       [:input {:type "text"
+                :placeholder "Describe maintenance completed."
+                :value notes } ]
+       [:input {:type "text"
+                :placeholder "User ID"
+                :value userid } ]
+       [:button {:on-click #(maint/add-new-maintenance
+                             durable-good
+                             notes
+                             userid)} "Add"]])))
 
 (defn maint-item
   [m]
@@ -36,7 +46,7 @@
   [:div
    [:div
     [maint-list]
-    ;; [add-maintenance]
+    [add-maintenance]
     ]])
 
 (defn render
