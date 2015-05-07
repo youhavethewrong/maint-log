@@ -1,32 +1,27 @@
+<!doctype html>
 <html>
   <head>
-    <title>Howdy howdy howdy!</title>
-
+    <title>Maintenance Log</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="//youhavethewrong.info/0.2/themes/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" 
           type="text/css" 
-          href="//www.qg.com/shared/cache/jquery-ui/1103/jquery-ui-1.10.3.css"/>
-
+          href="//youhavethewrong.info/0.2/strapdown.css"/>
     <link rel="stylesheet" 
           type="text/css" 
-          href="//www.qg.com/shared/nocache/qg/smartstudio/1.9/styles/style_screen.css"/>
-
-    <link rel="stylesheet" 
-          type="text/css" 
-          href="lib/portal/screen.css"/>
-
-
+          href="//youhavethewrong.info/0.2/themes/readable.min.css"/>
     
     <script type="text/javascript" src="goog/base.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript">
-      goog.require("maint.core");
+      goog.require("log.core");
     </script>    
   </head>
   <body>
-    <div id="environment-bar"/>
     <div id="app"/>
     <script>
-      maint.core.start();
+      log.core.start();
     </script>
   </body>
 

@@ -1,6 +1,6 @@
-(ns maint.core
+(ns log.core
   (:require [clojure.string :as string] 
-            [maint.maint :as maint]
+            [log.maint :as maint]
             [reagent.core :as reagent]))
 
 (enable-console-print!)
@@ -24,40 +24,47 @@
        [:input {:type "text"
                 :placeholder "User ID"
                 :value userid } ]
-       [:button {:on-click #(maint/add-new-maintenance
-                             durable-good
-                             notes
-                             userid)} "Add"]])))
+       [:button "Add"]])))
 
 (defn maint-item
   [m]
-  [:li [:span m]])
+  [:li [:span (str (js/Date. (:date m)))]
+   [:ul
+    [:li (:durableGood m)]
+    [:li (:notes m)]]])
 
-(defn maint-list
+(defn maintenance-list
   []
   [:div
    [:h1 "Maintenance log"]
    [:ul
-    (for [m (:completed @app-state)]
+    (for [m @app-state]
       (maint-item m))]])
 
-(defn maint-app
+(defn log-app
   []
   [:div
    [:div
-    [maint-list]
+    [maintenance-list]
     [add-maintenance]
     ]])
 
 (defn render
   []
   (reagent/render-component
-   [maint-app]
+   [log-app]
    (.getElementById js/document "app")))
+
+(defn handle-maintenance
+  [maintenance]
+  (reset! app-state maintenance)
+  (.log js/console @app-state)
+  (render))
+
+(defn fetch-maintenance
+  [f]
+  (maint/get-all-maintenance f))
 
 (defn start
   []
-  (let [stuff (maint/get-all-maintenance)]
-    (do
-      (swap! app-state :completed stuff )
-      (render))))
+  (fetch-maintenance handle-maintenance))
