@@ -21,11 +21,16 @@
         (f (return-body-when-ok response)))))
 
 (defn add-new-maintenance
-  [durable-good notes userid f]
-  (go (let [response (async/<! (http/post maint-uri
+  [durable-good notes userid]
+  (.log js/console (str "Going to post "
+                        durable-good
+                        " "
+                        notes
+                        " "
+                        userid))
+  (http/post maint-uri
                                           {:json-params
                                            {:durableGood durable-good
                                             :notes notes
-                                            :userid userid}}))]
-        (f (return-body-when-ok response)))))
-
+                                            :userid userid
+                                            :date (js/Date.)}}))

@@ -9,44 +9,52 @@
   (reagent/atom {:completed []}))
 
 (defn add-maintenance
+  "{:on-submit (fn [] (fetch-maintenance handle-maintenance))}"
   []
-  (let [durable-good ""
-        notes ""
-        userid 13]
+  (let [durable-good (reagent/atom "")
+        notes (reagent/atom "")]
     (fn []
       [:div
        [:input {:type "text"
-                :placeholder "Durable good."
-                :value durable-good } ]
-       [:input {:type "text"
-                :placeholder "Describe maintenance completed."
-                :value notes } ]
-       [:input {:type "text"
-                :placeholder "User ID"
-                :value userid } ]
-       [:button "Add"]])))
+                 :placeholder "Durable good."
+                 :on-change #(reset! durable-good (-> % .-target .-value))
+                 :value @durable-good } ]
+        [:input {:type "text"
+                 :placeholder "Describe maintenance completed."
+                 :on-change #(reset! notes (-> % .-target .-value))
+                 :value @notes } ]
+        [:button.button
+         {:on-click (partial maint/add-new-maintenance @durable-good @notes "13") }
+         [:span "Add"]]])))
 
 (defn maint-item
   [m]
-  [:li [:span (str (js/Date. (:date m)))]
-   [:ul
-    [:li (:durableGood m)]
-    [:li (:notes m)]]])
+  [:tr
+   [:td [:strong (str (js/Date. (:date m)))]]
+   [:td (:durableGood m)]
+   [:td (:notes m)]])
 
 (defn maintenance-list
   []
   [:div
-   [:h1 "Maintenance log"]
-   [:ul
+   [:table.table
     (for [m @app-state]
-      (maint-item m))]])
+      (maint-item m))
+    ]])
 
 (defn log-app
   []
   [:div
-   [:div
-    [maintenance-list]
+   [:div.navbar.navbar-fixed-top.brand
+    [:div.navbar-inner
+     [:div.container
+      [:div.brand {:id :headline}
+       [:a {:href "//youhavethewrong.info"}
+        "YouHaveTheWrong.info"]]]]]
+   [:div {:id :content :class :container}
+    [:h1 {:id :h1} "Maintenance log"]
     [add-maintenance]
+    [maintenance-list]
     ]])
 
 (defn render
@@ -58,7 +66,6 @@
 (defn handle-maintenance
   [maintenance]
   (reset! app-state maintenance)
-  (.log js/console @app-state)
   (render))
 
 (defn fetch-maintenance
