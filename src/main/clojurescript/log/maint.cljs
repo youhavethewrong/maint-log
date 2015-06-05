@@ -22,15 +22,9 @@
 
 (defn add-new-maintenance
   [durable-good notes userid]
-  (.log js/console (str "Going to post "
-                        durable-good
-                        " "
-                        notes
-                        " "
-                        userid))
   (http/post maint-uri
-                                          {:json-params
-                                           {:durableGood durable-good
-                                            :notes notes
-                                            :userid userid
-                                            :date (js/Date.)}}))
+             {:json-params
+              {:durableGood durable-good
+               :notes notes
+               :userid userid
+               :date (js/Date.)}}))

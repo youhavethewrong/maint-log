@@ -9,13 +9,13 @@
   (reagent/atom {:completed []}))
 
 (defn add-maintenance
-  "{:on-submit (fn [] (fetch-maintenance handle-maintenance))}"
   []
   (let [durable-good (reagent/atom "")
         notes (reagent/atom "")]
     (fn []
       [:div
-       [:input {:type "text"
+       [:form {:on-submit (fn [] (fetch-maintenance handle-maintenance))}
+        [:input {:type "text"
                  :placeholder "Durable good."
                  :on-change #(reset! durable-good (-> % .-target .-value))
                  :value @durable-good } ]
@@ -25,7 +25,7 @@
                  :value @notes } ]
         [:button.button
          {:on-click (partial maint/add-new-maintenance @durable-good @notes "13") }
-         [:span "Add"]]])))
+         [:span "Add"]]]])))
 
 (defn maint-item
   [m]
