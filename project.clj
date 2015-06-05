@@ -1,5 +1,8 @@
 (defproject info.youhavethewrong/log "1.0-SNAPSHOT"
-  :description "A simple example of how to use lein-cljsbuild"
+  :description "A UI for keeping track of maintenance performed upon durable goods."
+  :license {:name "Apache License, Version 2.0"
+            :url "https://www.apache.org/licenses/LICENSE-2.0"}
+
   :source-paths ["src-clj"]
   :dependencies [[org.clojure/clojure "1.6.0"] 
                  [org.clojure/clojurescript "0.0-3196"]
