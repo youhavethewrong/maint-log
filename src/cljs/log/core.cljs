@@ -8,6 +8,8 @@
 (def app-state
   (reagent/atom {:completed []}))
 
+(declare fetch-maintenance handle-maintenance)
+
 (defn add-maintenance
   []
   (let [durable-good (reagent/atom "")
